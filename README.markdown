@@ -5,9 +5,11 @@ SMART Health Cards are portable paper or digital versions of clinical informatio
 This document describes the basic concept of SMART Health IT cards and how to implement them using the MuleSoft Anypoint platform. It will provide a sample implementation and document how to adapt it to accelerate SMART Health Card implementations with MuleSoft’s AnyPoint Platform.
 
 **How SMART Health Cards work**
+
 Government agencies and healthcare organizations can issue SMART Health Cards to their clients in much the same way they would previously have issued paper certificates for vaccination or test results. However, SMART Health Cards are much more portable as they can be added to digital wallets and for example submitted during a flight booking through APIs. They are also much more secure as they use state of the art digital signatures based on similar cryptographic techniques used in Bitcoin.
 
 **Creating SMART Health Cards with MuleSoft’s AnyPoint Platform**
+
 The SMART Health team provides excellent documentation of the standards framework as well as a very good developer portal to assist with testing a standards compliant implementation at each step of the workflow.
 
 In summary the process of creating a SMART Health Card in MuleSoft consists of the following steps:
@@ -24,6 +26,7 @@ The first step is to integrate with the systems of record that carry the patient
 The resulting FHIR bundle which consists of the patient demographics and their vaccination records is inserted into a Verifiable Credential (VC) structure. MuleSoft’s DataWeave and message transformation functions make it very easy for developers to convert data from the format and structure as received of the source system into the desired SMART Health Card format using drag & drop.
 
 **Step 2: Minimise the size: minify & compress**
+
 To ensure the SMART Health Card can be encoded in a single QR code the payload needs to be as small as possible. Therefore the first step is to remove all white space (minify) the payload. Again MuleSoft makes this very easy by simply adding indent=false to the output in a transform processor.
 
 
@@ -35,6 +38,7 @@ payloadCompressed = DeflateUtils.compress(byteArray);
 
 
 **Step 3: Digitally sign and create a JWS (JSON Web Signature)**
+
 To ensure the authenticity of the SMART Health Card they are digitally signed using public/private key encryption. The first step is to define the public & private keys in the form of a JWK (JSON Web Key). The SMART Health Card specification requires the use of the P-256 Elliptic Curve with algorithm ES256. The key id is the base64url SHA-256 thumbprint of the key. During development you may use https://mkjwk.org/ where you can easily create these keys. 
 
 //Sample JSON Web Key (Private Key)
